@@ -30,13 +30,6 @@
                 Text="(?)" ToolTip="https://github.com/Hibbiki/chromium-win64" />
         </StackPanel>
         <StackPanel Orientation="Horizontal">
-            <CheckBox Name="WPFInstalledge" Content="Edge"
-                ToolTip="Microsoft Edge is a modern web browser built on Chromium, offering performance, security, and integration with Microsoft services."
-                Margin="0,0,2,0" />
-            <TextBlock Name="WPFInstalledgeLink" Style="{StaticResource HoverTextBlockStyle}"
-                Text="(?)" ToolTip="https://www.microsoft.com/edge" />
-        </StackPanel>
-        <StackPanel Orientation="Horizontal">
             <CheckBox Name="WPFInstallfirefox" Content="Firefox"
                 ToolTip="Mozilla Firefox is an open-source web browser known for its customization options, privacy features, and extensions."
                 Margin="0,0,2,0" />
