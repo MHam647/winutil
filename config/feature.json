@@ -49,39 +49,6 @@
 
     ]
   },
-  "WPFFeaturewsl": {
-    "Content": "Windows Subsystem for Linux",
-    "Description": "Windows Subsystem for Linux is an optional feature of Windows that allows Linux programs to run natively on Windows without the need for a separate virtual machine or dual booting.",
-    "category": "Features",
-    "panel": "1",
-    "Order": "a020_",
-    "feature": [
-      "VirtualMachinePlatform",
-      "Microsoft-Windows-Subsystem-Linux"
-    ],
-    "InvokeScript": [
-
-    ]
-  },
-  "WPFFeaturenfs": {
-    "Content": "NFS - Network File System",
-    "Description": "Network File System (NFS) is a mechanism for storing files on a network.",
-    "category": "Features",
-    "panel": "1",
-    "Order": "a014_",
-    "feature": [
-      "ServicesForNFS-ClientOnly",
-      "ClientForNFS-Infrastructure",
-      "NFS-Administration"
-    ],
-    "InvokeScript": [
-      "nfsadmin client stop",
-      "Set-ItemProperty -Path 'HKLM:\\SOFTWARE\\Microsoft\\ClientForNFS\\CurrentVersion\\Default' -Name 'AnonymousUID' -Type DWord -Value 0",
-      "Set-ItemProperty -Path 'HKLM:\\SOFTWARE\\Microsoft\\ClientForNFS\\CurrentVersion\\Default' -Name 'AnonymousGID' -Type DWord -Value 0",
-      "nfsadmin client start",
-      "nfsadmin client localhost config fileaccess=755 SecFlavors=+sys -krb5 -krb5i"
-    ]
-  },
   "WPFFeatureEnableSearchSuggestions": {
     "Content": "Enable Search Box Web Suggestions in Registry(explorer restart)",
     "Description": "Enables web suggestions when searching using Windows Search.",
@@ -91,13 +58,7 @@
     "feature": [
     ],
     "InvokeScript": [
-      "
-      If (!(Test-Path 'HKCU:\\SOFTWARE\\Policies\\Microsoft\\Windows\\Explorer')) {
-            New-Item -Path 'HKCU:\\SOFTWARE\\Policies\\Microsoft\\Windows\\Explorer' -Force | Out-Null
-      }
-      New-ItemProperty -Path 'HKCU:\\SOFTWARE\\Policies\\Microsoft\\Windows\\Explorer' -Name 'DisableSearchBoxSuggestions' -Type DWord -Value 0 -Force
-      Stop-Process -name explorer -force
-      "
+      "If (!(Test-Path 'HKCU:\\SOFTWARE\\Policies\\Microsoft\\Windows\\Explorer')) { New-Item -Path 'HKCU:\\SOFTWARE\\Policies\\Microsoft\\Windows\\Explorer' -Force | Out-Null }New-ItemProperty -Path 'HKCU:\\SOFTWARE\\Policies\\Microsoft\\Windows\\Explorer' -Name 'DisableSearchBoxSuggestions' -Type DWord -Value 0 -Force Stop-Process -name explorer -force"
     ]
   },
   "WPFFeatureDisableSearchSuggestions": {
@@ -109,13 +70,7 @@
     "feature": [
     ],
     "InvokeScript": [
-      "
-      If (!(Test-Path 'HKCU:\\SOFTWARE\\Policies\\Microsoft\\Windows\\Explorer')) {
-            New-Item -Path 'HKCU:\\SOFTWARE\\Policies\\Microsoft\\Windows\\Explorer' -Force | Out-Null
-      }
-      New-ItemProperty -Path 'HKCU:\\SOFTWARE\\Policies\\Microsoft\\Windows\\Explorer' -Name 'DisableSearchBoxSuggestions' -Type DWord -Value 1 -Force
-      Stop-Process -name explorer -force
-      "
+      "If (!(Test-Path 'HKCU:\\SOFTWARE\\Policies\\Microsoft\\Windows\\Explorer')) {New-Item -Path 'HKCU:\\SOFTWARE\\Policies\\Microsoft\\Windows\\Explorer' -Force | Out-Null} New-ItemProperty -Path 'HKCU:\\SOFTWARE\\Policies\\Microsoft\\Windows\\Explorer' -Name 'DisableSearchBoxSuggestions' -Type DWord -Value 1 -Force Stop-Process -name explorer -force"
     ]
   },
   "WPFFeatureRegBackup": {
@@ -127,13 +82,7 @@
     "feature": [
     ],
     "InvokeScript": [
-      "
-      New-ItemProperty -Path 'HKLM:\\SYSTEM\\CurrentControlSet\\Control\\Session Manager\\Configuration Manager' -Name 'EnablePeriodicBackup' -Type DWord -Value 1 -Force
-      New-ItemProperty -Path 'HKLM:\\SYSTEM\\CurrentControlSet\\Control\\Session Manager\\Configuration Manager' -Name 'BackupCount' -Type DWord -Value 2 -Force
-      $action = New-ScheduledTaskAction -Execute 'schtasks' -Argument '/run /i /tn \"\\Microsoft\\Windows\\Registry\\RegIdleBackup\"'
-      $trigger = New-ScheduledTaskTrigger -Daily -At 00:30
-      Register-ScheduledTask -Action $action -Trigger $trigger -TaskName 'AutoRegBackup' -Description 'Create System Registry Backups' -User 'System'
-      "
+      "New-ItemProperty -Path 'HKLM:\\SYSTEM\\CurrentControlSet\\Control\\Session Manager\\Configuration Manager' -Name 'EnablePeriodicBackup' -Type DWord -Value 1 -Force New-ItemProperty -Path 'HKLM:\\SYSTEM\\CurrentControlSet\\Control\\Session Manager\\Configuration Manager' -Name 'BackupCount' -Type DWord -Value 2 -Force $action = New-ScheduledTaskAction -Execute 'schtasks' -Argument '/run /i /tn \"\\Microsoft\\Windows\\Registry\\RegIdleBackup\"' $trigger = New-ScheduledTaskTrigger -Daily -At 00:30 Register-ScheduledTask -Action $action -Trigger $trigger -TaskName 'AutoRegBackup' -Description 'Create System Registry Backups' -User 'System'"
     ]
   },
   "WPFFeatureEnableLegacyRecovery": {
@@ -145,13 +94,7 @@
     "feature": [
     ],
     "InvokeScript": [
-      "
-      If (!(Test-Path 'HKLM:\\SYSTEM\\CurrentControlSet\\Control\\Session Manager\\Configuration Manager\\LastKnownGood')) {
-            New-Item -Path 'HKLM:\\SYSTEM\\CurrentControlSet\\Control\\Session Manager\\Configuration Manager\\LastKnownGood' -Force | Out-Null
-      }
-      New-ItemProperty -Path 'HKLM:\\SYSTEM\\CurrentControlSet\\Control\\Session Manager\\Configuration Manager\\LastKnownGood' -Name 'Enabled' -Type DWord -Value 1 -Force
-      Start-Process -FilePath cmd.exe -ArgumentList '/c bcdedit /Set {Current} BootMenuPolicy Legacy' -Wait
-      "
+      "If (!(Test-Path 'HKLM:\\SYSTEM\\CurrentControlSet\\Control\\Session Manager\\Configuration Manager\\LastKnownGood')) { New-Item -Path 'HKLM:\\SYSTEM\\CurrentControlSet\\Control\\Session Manager\\Configuration Manager\\LastKnownGood' -Force | Out-Null } New-ItemProperty -Path 'HKLM:\\SYSTEM\\CurrentControlSet\\Control\\Session Manager\\Configuration Manager\\LastKnownGood' -Name 'Enabled' -Type DWord -Value 1 -Force Start-Process -FilePath cmd.exe -ArgumentList '/c bcdedit /Set {Current} BootMenuPolicy Legacy' -Wait"
     ]
   },
   "WPFFeatureDisableLegacyRecovery": {
@@ -163,13 +106,7 @@
     "feature": [
     ],
     "InvokeScript": [
-      "
-      If (!(Test-Path 'HKLM:\\SYSTEM\\CurrentControlSet\\Control\\Session Manager\\Configuration Manager\\LastKnownGood')) {
-            New-Item -Path 'HKLM:\\SYSTEM\\CurrentControlSet\\Control\\Session Manager\\Configuration Manager\\LastKnownGood' -Force | Out-Null
-      }
-      New-ItemProperty -Path 'HKLM:\\SYSTEM\\CurrentControlSet\\Control\\Session Manager\\Configuration Manager\\LastKnownGood' -Name 'Enabled' -Type DWord -Value 0 -Force
-      Start-Process -FilePath cmd.exe -ArgumentList '/c bcdedit /Set {Current} BootMenuPolicy Standard' -Wait
-      "
+      "If (!(Test-Path 'HKLM:\\SYSTEM\\CurrentControlSet\\Control\\Session Manager\\Configuration Manager\\LastKnownGood')) { New-Item -Path 'HKLM:\\SYSTEM\\CurrentControlSet\\Control\\Session Manager\\Configuration Manager\\LastKnownGood' -Force | Out-Null } New-ItemProperty -Path 'HKLM:\\SYSTEM\\CurrentControlSet\\Control\\Session Manager\\Configuration Manager\\LastKnownGood' -Name 'Enabled' -Type DWord -Value 0 -Force Start-Process -FilePath cmd.exe -ArgumentList '/c bcdedit /Set {Current} BootMenuPolicy Standard' -Wait"
     ]
   },
   "WPFFeaturesandbox": {
@@ -185,13 +122,6 @@
     "panel": "1",
     "Order": "a060_",
     "Type": "150"
-  },
-  "WPFPanelAutologin": {
-    "Content": "Set Up Autologin",
-    "category": "Fixes",
-    "Order": "a040_",
-    "panel": "1",
-    "Type": "300"
   },
   "WPFFixesUpdate": {
     "Content": "Reset Windows Update",
@@ -260,12 +190,6 @@
   },
   "WPFPanelsystem": {
     "Content": "System Properties",
-    "category": "Legacy Windows Panels",
-    "panel": "2",
-    "Type": "200"
-  },
-  "WPFPaneluser": {
-    "Content": "User Accounts",
     "category": "Legacy Windows Panels",
     "panel": "2",
     "Type": "200"
